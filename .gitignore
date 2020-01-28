@@ -1,0 +1,13 @@
+*.project
+.virtualbox/
+**/~$*
+IDE/
+Tools/mRemoteNG/bin/
+Tools/mRemoteNG/resources/*.backup
+Tools/mRemoteNG/resources/mRemoteNG.zip
+docker-machine*.exe
+boot2docker*.iso
+Workspace/setup/jenkins/.m2/repo/
+Workspace/setup/jenkins/.m2/settings-local.xml
+Workspace/setup/jenkins/jenkins_home/
+Workspace/setup/nexus-data/

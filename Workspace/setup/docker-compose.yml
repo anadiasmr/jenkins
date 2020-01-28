@@ -1,0 +1,53 @@
+version: '3.5'
+
+services:
+  jenkins:
+    image: jenkinsci/blueocean:1.21.0
+    container_name: jenkins
+    restart: always
+    privileged: true
+    user: root
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - ./jenkins/jenkins_home:/var/jenkins_home
+      - ./jenkins/.m2:/home/jenkins/.m2
+      # Allows jenkins to interact with local docker daemon
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /workspace/Workspace:/workspace
+
+  sonarqube:
+    image: sonarqube:7.9.1-community
+    container_name: sonarqube
+    restart: always
+    ports:
+      - 8081:9000
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+
+  nexus:
+    image: sonatype/nexus3:3.19.1
+    container_name: nexus
+    restart: always
+    user: root
+    volumes:
+      - ./nexus-data:/nexus-data
+    ports:
+      - 8082:8081
+    dns:
+      - 8.8.8.8
+
+volumes:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_bundled-plugins:
+  
+networks:
+  default:
+    external:
+      name: training-playground

@@ -1,0 +1,38 @@
+#!/bin/bash
+if [ "$1" = "pod" ] || [ "$1" = "pods" ]; then
+   echo kubectl get "$@"
+   kubectl get "$@"
+elif [ "$1" = "pvc" ] || [ "$1" = "pvcs" ]; then
+   echo kubectl get "$@"
+   kubectl get "$@"
+elif [ "$1" = "sts" ]; then
+   echo kubectl get "$@"
+   kubectl get "$@"
+elif [ "$1" = "context" ] && [ -z "$2" ]; then
+   echo kubectl config get-contexts
+   kubectl config get-contexts
+elif [ "$1" = "context" ] && [ ! -z "$2" ] && [ -z "$3" ]; then
+   echo kubectl config use-context "$2"
+   kubectl config use-context "$2"
+elif [ "$1" = "event" ] || [ "$1" = "events" ] && [ -z "$2" ]; then
+   echo kubectl get "$@"
+   kubectl get "$@"
+elif [ "$1" = "event" ] || [ "$1" = "events" ] && [ ! -z "$2" ] && [ -z "$3" ]; then
+   echo "kubectl describe pod $2 | grep -A20 Events"
+   kubectl describe pod $2 | grep -A20 Events
+elif [ "$1" = "event" ] || [ "$1" = "events" ] && [ ! -z "$2" ] && [ ! -z "$3" ] && [ -z "$4" ]; then
+   echo "kubectl describe $2 $3 | grep -A20 Events"
+   kubectl describe $2 $3 | grep -A20 Events
+elif [ "$1" = "exec" ] && [ ! -z "$2" ] && [ -z "$3" ]; then
+   echo "kubectl exec $2 -it -- /bin/bash"
+   kubectl exec $2 -it -- /bin/bash
+elif [ "$1" = "exec" ] && [ ! -z "$2" ] && [ ! -z "$3" ] && [ -z "$4" ]; then
+   echo "kubectl exec $2 -it -- $3"
+   kubectl exec $2 -it -- $3
+elif [ "$1" = "fd" ]; then
+   echo kubectl delete pod --force --grace-period=0 "$@"
+   kubectl delete pod --force --grace-period=0 "$@"
+else
+   echo kubectl "$@"
+   kubectl "$@"
+fi
